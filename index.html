@@ -2,158 +2,34 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>HELLO ERICA OTT</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    /* =====================
-       헤더
-    ===================== */
-    .header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 64px;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 40px;
-      z-index: 100;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-      color: #00ffe1;
-    }
-
-    .menu a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .menu a:hover {
-      color: #00ffe1;
-    }
-
-    /* =====================
-       히어로 영역
-    ===================== */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 14px;
-    }
-
-    .hero p {
-      font-size: 16px;
-      opacity: 0.8;
-    }
-
-    .btn {
-      margin-top: 24px;
-      padding: 14px 32px;
-      border-radius: 30px;
-      background: #00ffe1;
-      color: black;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: white;
-      transform: scale(1.05);
-    }
-
-    /* =====================
-       콘텐츠 섹션
-    ===================== */
-    .section {
-      padding: 80px 40px;
-    }
-
-    .section h2 {
-      margin-bottom: 20px;
-    }
-
-    .card-row {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-    }
-
-    .card {
-      min-width: 220px;
-      height: 130px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #00ffe1, #007f73);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00ffe1;
-    }
-  </style>
+  <title>HELLO ERICA</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- 상단 헤더 -->
-  <header class="header">
+  <header class="top-nav">
     <div class="logo">HELLO ERICA</div>
-    <nav class="menu">
-      <a href="#">홈</a>
-      <a href="#">장르</a>
-      <a href="#">마이페이지</a>
+    <nav>
+      <a href="index.html">홈</a>
+      <a href="character.html">캐릭터</a>
+      <a href="mypage.html">마이페이지</a>
+      <a href="login.html">로그인</a>
     </nav>
   </header>
 
-  <!-- 히어로 -->
-  <div class="hero">
+  <section class="hero">
     <h1>HELLO ERICA</h1>
     <p>SF 감성 OTT 메인 페이지</p>
-    <a class="btn" href="#">시작하기</a>
-  </div>
+    <button class="primary-btn" onclick="gainXP()">XP 획득</button>
+  </section>
 
-  <!-- 콘텐츠 -->
-  <div class="section">
-    <h2>🔥 지금 인기 콘텐츠</h2>
-    <div class="card-row">
-      <div class="card">콘텐츠 1</div>
-      <div class="card">콘텐츠 2</div>
-      <div class="card">콘텐츠 3</div>
-      <div class="card">콘텐츠 4</div>
-    </div>
-  </div>
+  <section class="status-box">
+    <div>LV <span id="level">1</span></div>
+    <div>XP <span id="xp">0</span> / 100</div>
+    <div>마일리지 <span id="mileage">0</span></div>
+  </section>
 
+  <script src="app.js"></script>
 </body>
 </html>
 
