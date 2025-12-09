@@ -1,101 +1,158 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>HYUFLIX</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<title>HYUFLIX</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #10203a, #000);
+  color: white;
+}
+
+/* 상단바 */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: black;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+.logo { color: red; font-size: 24px; font-weight: bold; }
+.menu a { color: white; margin-right: 20px; text-decoration: none; }
+.search-box { padding: 5px; }
+.icons span { margin-left: 15px; cursor: pointer; }
+
+/* 히어로 */
+.hero {
+  height: 400px;
+  background: linear-gradient(to right, #00c6ff, #000);
+  display: flex;
+  align-items: center;
+  padding: 120px 60px 0;
+}
+.hero button { margin-right: 10px; padding: 10px 20px; }
+
+/* 영화 영역 */
+.section { padding: 40px; }
+.slider { display: flex; gap: 15px; overflow-x: auto; }
+.card {
+  width: 200px;
+  height: 300px;
+  background-size: cover;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+.info {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  width: 100%;
+  padding: 10px;
+  opacity: 0;
+}
+.card:hover .info { opacity: 1; }
+
+/* 모달 */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: #111;
+  padding: 40px;
+  border-radius: 10px;
+  width: 400px;
+}
+.close { cursor: pointer; float: right; font-size: 20px; }
+</style>
 </head>
 <body>
-  <!-- 상단 네비게이션 -->
-  <header class="top-nav">
-    <div class="nav-left">
-      <div class="logo">HYUFLIX</div>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">홈</a></li>
-        <li><a href="#">영화</a></li>
-        <li><a href="#">시리즈</a></li>
-        <li><a href="#">장르</a></li>
-        <li><a href="mypage.html">마이페이지</a></li>
-      </ul>
-    </div>
-    <div class="nav-right">
-      <button class="icon-btn" title="검색">🔍</button>
-      <button class="icon-btn" title="알림함">🔔</button>
-      <div class="profile-badge">HY</div>
-    </div>
-  </header>
 
-  <main>
-    <!-- 상단 히어로 배너 (화면 상단 절반 정도 채우는 추천 영화) -->
-    <section class="hero" id="hero">
-      <div class="hero-backdrop" id="hero-backdrop"></div>
-      <div class="hero-gradient"></div>
-      <div class="hero-content">
-        <span class="hero-badge">HYUFLIX TOP PICK</span>
-        <h1 id="hero-title">HYUFLIX</h1>
-        <p id="hero-desc" class="hero-desc">
-          SF 감성 OTT HYUFLIX 추천 작품을 만나보세요.
-        </p>
-        <div class="hero-meta">
-          <span id="hero-rating" class="meta-rating"></span>
-          · <span id="hero-genre"></span>
-          · <span id="hero-year"></span>
-        </div>
-        <div class="hero-buttons">
-          <button class="btn btn-primary">▶ 재생</button>
-          <button class="btn btn-secondary" id="hero-detail-btn">상세 정보</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 아래부터 추천 섹션들 (스크롤 가능 영역) -->
-    <section class="rows-wrapper">
-      <!-- 섹션 1 -->
-      <section class="row">
-        <h2>지금 뜨는 SF 영화</h2>
-        <div class="row-scroll" id="row-trending"></div>
-      </section>
-
-      <!-- 섹션 2 -->
-      <section class="row">
-        <h2>당신을 위한 추천 콘텐츠</h2>
-        <div class="row-scroll" id="row-recommended"></div>
-      </section>
-
-      <!-- 섹션 3 -->
-      <section class="row">
-        <h2>평점 TOP SF 셀렉션</h2>
-        <div class="row-scroll" id="row-toprated"></div>
-      </section>
-    </section>
-  </main>
-
-  <!-- 상세 정보 모달 -->
-  <div class="detail-modal" id="detail-modal">
-    <div class="detail-backdrop"></div>
-    <div class="detail-content">
-      <button class="detail-close" id="detail-close">&times;</button>
-      <div class="detail-left">
-        <h2 id="detail-title">제목</h2>
-        <div class="detail-meta">
-          <span id="detail-year"></span>
-          <span id="detail-age"></span>
-          <span id="detail-runtime"></span>
-          <span id="detail-rating"></span>
-        </div>
-        <p id="detail-synopsis" class="detail-synopsis">
-          줄거리 설명이 들어갑니다.
-        </p>
-        <p id="detail-tags" class="detail-tags"></p>
-      </div>
-      <div class="detail-right">
-        <div class="detail-poster" id="detail-poster"></div>
-      </div>
-    </div>
+<div class="top">
+  <div class="logo">HYUFLIX</div>
+  <div class="menu">
+    <a href="#">홈</a><a href="#">영화</a><a href="#">시리즈</a>
+    <a href="#">장르</a><a href="#">마이페이지</a>
   </div>
+  <input class="search-box" placeholder="검색…" onkeyup="searchMovie(this.value)">
+  <div class="icons"><span onclick="alert('알림 없음')">🔔</span></div>
+</div>
 
-  <script src="app.js"></script>
+<div class="hero">
+  <div>
+    <h1>HYUFLIX 추천작</h1>
+    <p>SF 감성 대표 영화</p>
+    <button onclick="alert('재생(가상)')">▶ 재생</button>
+  </div>
+</div>
+
+<div class="section">
+  <h2>추천 영화 15선</h2>
+  <div class="slider" id="movieList"></div>
+</div>
+
+<div class="modal" id="detail">
+  <div class="modal-content">
+    <span class="close" onclick="closeDetail()">X</span>
+    <h2 id="title"></h2>
+    <p id="desc"></p>
+    <p>평점: <span id="rate"></span>/5</p>
+  </div>
+</div>
+
+<script>
+const movies = [
+{title:"인터스텔라", img:"https://i.imgur.com/A8KQz8R.jpg", rate:4.9, desc:"우주 생존"},
+{title:"인셉션", img:"https://i.imgur.com/6KQcbNY.jpg", rate:4.8, desc:"꿈 침투"},
+{title:"블레이드러너", img:"https://i.imgur.com/1U8aXUA.jpg", rate:4.7, desc:"복제인간"},
+{title:"듄", img:"https://i.imgur.com/1m4tYJ8.jpg", rate:4.7, desc:"사막"},
+{title:"매트릭스", img:"https://i.imgur.com/8E3f2Rj.jpg", rate:4.9, desc:"가상현실"},
+{title:"그래비티", img:"https://i.imgur.com/y9MI4R1.jpg", rate:4.5, desc:"우주 재난"},
+{title:"마션", img:"https://i.imgur.com/XYG7aUn.jpg", rate:4.6, desc:"화성 생존"},
+{title:"아바타", img:"https://i.imgur.com/O0p9Q0n.jpg", rate:4.8, desc:"판도라"},
+{title:"터미네이터", img:"https://i.imgur.com/1rgK1fr.jpg", rate:4.5, desc:"기계"},
+{title:"월-E", img:"https://i.imgur.com/Pf6U48H.jpg", rate:4.8, desc:"로봇"},
+{title:"스타워즈", img:"https://i.imgur.com/sN42UqL.jpg", rate:4.7, desc:"우주"},
+{title:"컨택트", img:"https://i.imgur.com/kdB5zDi.jpg", rate:4.4, desc:"외계"},
+{title:"서클", img:"https://i.imgur.com/LDi8m6E.jpg", rate:3.8, desc:"미스터리"},
+{title:"설국열차", img:"https://i.imgur.com/5BqFw30.jpg", rate:3.9, desc:"열차"},
+{title:"레디플레이어원", img:"https://i.imgur.com/vV9dJpH.jpg", rate:4.0, desc:"게임"}
+];
+
+const list=document.getElementById("movieList");
+movies.forEach((m,i)=>{
+ const c=document.createElement("div");
+ c.className="card";
+ c.style.backgroundImage=`url(${m.img})`;
+ c.onclick=()=>openDetail(i);
+ c.innerHTML=`<div class="info">${m.title}<br>⭐${m.rate}</div>`;
+ list.appendChild(c);
+});
+
+function openDetail(i){
+ document.getElementById("detail").style.display="flex";
+ title.innerText=movies[i].title;
+ desc.innerText=movies[i].desc;
+ rate.innerText=movies[i].rate;
+}
+function closeDetail(){detail.style.display="none";}
+function searchMovie(txt){
+ const cards=[...document.querySelectorAll(".card")];
+ cards.forEach(c=>{
+  c.style.display=c.innerText.includes(txt)? "block":"none";
+ });
+}
+</script>
 </body>
 </html>
-
-
