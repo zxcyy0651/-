@@ -1,35 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>HELLO ERICA</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>HYUFLIX</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
+  <!-- 상단 네비게이션 -->
   <header class="top-nav">
-    <div class="logo">HELLO ERICA</div>
-    <nav>
-      <a href="index.html">홈</a>
-      <a href="character.html">캐릭터</a>
-      <a href="mypage.html">마이페이지</a>
-      <a href="login.html">로그인</a>
-    </nav>
+    <div class="nav-left">
+      <div class="logo">HYUFLIX</div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">홈</a></li>
+        <li><a href="#">영화</a></li>
+        <li><a href="#">시리즈</a></li>
+        <li><a href="#">장르</a></li>
+        <li><a href="mypage.html">마이페이지</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" title="검색">🔍</button>
+      <button class="icon-btn" title="알림함">🔔</button>
+      <div class="profile-badge">HY</div>
+    </div>
   </header>
 
-  <section class="hero">
-    <h1>HELLO ERICA</h1>
-    <p>SF 감성 OTT 메인 페이지</p>
-    <button class="primary-btn" onclick="gainXP()">XP 획득</button>
-  </section>
+  <main>
+    <!-- 상단 히어로 배너 (화면 상단 절반 정도 채우는 추천 영화) -->
+    <section class="hero" id="hero">
+      <div class="hero-backdrop" id="hero-backdrop"></div>
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <span class="hero-badge">HYUFLIX TOP PICK</span>
+        <h1 id="hero-title">HYUFLIX</h1>
+        <p id="hero-desc" class="hero-desc">
+          SF 감성 OTT HYUFLIX 추천 작품을 만나보세요.
+        </p>
+        <div class="hero-meta">
+          <span id="hero-rating" class="meta-rating"></span>
+          · <span id="hero-genre"></span>
+          · <span id="hero-year"></span>
+        </div>
+        <div class="hero-buttons">
+          <button class="btn btn-primary">▶ 재생</button>
+          <button class="btn btn-secondary" id="hero-detail-btn">상세 정보</button>
+        </div>
+      </div>
+    </section>
 
-  <section class="status-box">
-    <div>LV <span id="level">1</span></div>
-    <div>XP <span id="xp">0</span> / 100</div>
-    <div>마일리지 <span id="mileage">0</span></div>
-  </section>
+    <!-- 아래부터 추천 섹션들 (스크롤 가능 영역) -->
+    <section class="rows-wrapper">
+      <!-- 섹션 1 -->
+      <section class="row">
+        <h2>지금 뜨는 SF 영화</h2>
+        <div class="row-scroll" id="row-trending"></div>
+      </section>
+
+      <!-- 섹션 2 -->
+      <section class="row">
+        <h2>당신을 위한 추천 콘텐츠</h2>
+        <div class="row-scroll" id="row-recommended"></div>
+      </section>
+
+      <!-- 섹션 3 -->
+      <section class="row">
+        <h2>평점 TOP SF 셀렉션</h2>
+        <div class="row-scroll" id="row-toprated"></div>
+      </section>
+    </section>
+  </main>
+
+  <!-- 상세 정보 모달 -->
+  <div class="detail-modal" id="detail-modal">
+    <div class="detail-backdrop"></div>
+    <div class="detail-content">
+      <button class="detail-close" id="detail-close">&times;</button>
+      <div class="detail-left">
+        <h2 id="detail-title">제목</h2>
+        <div class="detail-meta">
+          <span id="detail-year"></span>
+          <span id="detail-age"></span>
+          <span id="detail-runtime"></span>
+          <span id="detail-rating"></span>
+        </div>
+        <p id="detail-synopsis" class="detail-synopsis">
+          줄거리 설명이 들어갑니다.
+        </p>
+        <p id="detail-tags" class="detail-tags"></p>
+      </div>
+      <div class="detail-right">
+        <div class="detail-poster" id="detail-poster"></div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
 </html>
+
 
