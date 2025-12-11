@@ -21,7 +21,7 @@
         <div class="input-line"></div>
       </div>
       
-      <button class="login-btn" onclick="login()">
+      <button class="login-btn" id="loginBtn">
         <span>시작하기</span>
         <div class="btn-particles"></div>
       </button>
@@ -34,8 +34,17 @@
     <div class="particles-bg"></div>
   </div>
 
-  <script src="game.js"></script>
   <script>
+    // 일일 미션 초기화 함수
+    function initDailyMissions() {
+      return {
+        watchMovies: { target: 3, current: 0, reward: 30, completed: false },
+        watchTrailers: { target: 5, current: 0, reward: 50, completed: false },
+        addFavorites: { target: 2, current: 0, reward: 20, completed: false }
+      };
+    }
+
+    // 로그인 함수
     function login() {
       const nickname = document.getElementById('nickname').value.trim();
       
@@ -43,6 +52,8 @@
         alert('닉네임을 입력해주세요!');
         return;
       }
+      
+      console.log('로그인 시도:', nickname); // 디버깅용
       
       // 첫 로그인 체크
       let userData = JSON.parse(localStorage.getItem('userData'));
@@ -65,6 +76,7 @@
           },
           dailyMissions: initDailyMissions()
         };
+        console.log('신규 유저 생성:', userData); // 디버깅용
       } else {
         // 기존 유저 (닉네임 업데이트 가능)
         userData.nickname = nickname;
@@ -77,18 +89,34 @@
           userData.dailyMissions = initDailyMissions();
           alert('🎉 출석 체크! 마일리지 +20');
         }
+        console.log('기존 유저 로그인:', userData); // 디버깅용
       }
       
       localStorage.setItem('userData', JSON.stringify(userData));
+      console.log('로컬스토리지 저장 완료'); // 디버깅용
       
       // 메인으로 이동
+      console.log('index.html로 이동 시도'); // 디버깅용
       window.location.href = 'index.html';
     }
     
+    // 버튼 클릭 이벤트
+    document.getElementById('loginBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('버튼 클릭됨!'); // 디버깅용
+      login();
+    });
+    
     // 엔터키로 로그인
     document.getElementById('nickname').addEventListener('keypress', function(e){
-      if(e.key === 'Enter') login();
+      if(e.key === 'Enter') {
+        e.preventDefault();
+        console.log('엔터 입력됨!'); // 디버깅용
+        login();
+      }
     });
+    
+    console.log('login.html 스크립트 로드 완료'); // 디버깅용
   </script>
 </body>
 </html>
