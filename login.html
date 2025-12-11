@@ -3,13 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <title>HYUFLIX - Login</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #000 100%);
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .login-container {
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+
+    .glitch {
+      font-size: 72px;
+      font-weight: bold;
+      color: #ff0040;
+      text-shadow: 
+        0 0 10px #ff0040,
+        0 0 20px #ff0040,
+        0 0 30px #ff0040;
+      margin-bottom: 30px;
+    }
+
+    .login-box {
+      background: rgba(26, 26, 46, 0.9);
+      border: 2px solid rgba(255, 0, 64, 0.3);
+      border-radius: 20px;
+      padding: 40px 60px;
+      box-shadow: 0 0 50px rgba(255, 0, 64, 0.3);
+    }
+
+    .login-box h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff0040, #00d9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #888;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 30px;
+    }
+
+    .input-group input {
+      width: 300px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      border-bottom: 2px solid rgba(255, 0, 64, 0.5);
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-bottom-color: #ff0040;
+      background: rgba(255, 0, 64, 0.1);
+    }
+
+    .input-group input::placeholder {
+      color: #666;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(90deg, #ff0040, #ff4070);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 100;
+    }
+
+    .login-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 0, 64, 0.6);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .welcome-bonus {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(0, 217, 255, 0.1);
+      border: 1px solid rgba(0, 217, 255, 0.3);
+      border-radius: 10px;
+      font-size: 14px;
+      color: #00d9ff;
+    }
+  </style>
 </head>
-<body class="login-body">
+<body>
 
   <div class="login-container">
     <div class="glitch-wrapper">
-      <h1 class="glitch" data-text="HYUFLIX">HYUFLIX</h1>
+      <h1 class="glitch">HYUFLIX</h1>
     </div>
     
     <div class="login-box">
@@ -18,23 +131,21 @@
       
       <div class="input-group">
         <input type="text" id="nickname" placeholder="닉네임을 입력하세요" maxlength="10">
-        <div class="input-line"></div>
       </div>
       
-      <button class="login-btn" id="loginBtn">
-        <span>시작하기</span>
-        <div class="btn-particles"></div>
+      <button class="login-btn" id="loginBtn" type="button">
+        시작하기
       </button>
       
       <div class="welcome-bonus">
         🎁 신규 가입 보너스: 마일리지 100 지급!
       </div>
     </div>
-    
-    <div class="particles-bg"></div>
   </div>
 
   <script>
+    console.log('스크립트 시작');
+
     // 일일 미션 초기화 함수
     function initDailyMissions() {
       return {
@@ -46,14 +157,15 @@
 
     // 로그인 함수
     function login() {
+      console.log('login 함수 실행됨');
+      
       const nickname = document.getElementById('nickname').value.trim();
+      console.log('입력된 닉네임:', nickname);
       
       if(!nickname) {
         alert('닉네임을 입력해주세요!');
         return;
       }
-      
-      console.log('로그인 시도:', nickname); // 디버깅용
       
       // 첫 로그인 체크
       let userData = JSON.parse(localStorage.getItem('userData'));
@@ -76,9 +188,9 @@
           },
           dailyMissions: initDailyMissions()
         };
-        console.log('신규 유저 생성:', userData); // 디버깅용
+        console.log('신규 유저 생성');
       } else {
-        // 기존 유저 (닉네임 업데이트 가능)
+        // 기존 유저
         userData.nickname = nickname;
         
         // 출석 체크
@@ -89,34 +201,35 @@
           userData.dailyMissions = initDailyMissions();
           alert('🎉 출석 체크! 마일리지 +20');
         }
-        console.log('기존 유저 로그인:', userData); // 디버깅용
+        console.log('기존 유저 로그인');
       }
       
       localStorage.setItem('userData', JSON.stringify(userData));
-      console.log('로컬스토리지 저장 완료'); // 디버깅용
+      console.log('데이터 저장 완료, 페이지 이동 시작');
       
       // 메인으로 이동
-      console.log('index.html로 이동 시도'); // 디버깅용
       window.location.href = 'index.html';
     }
     
+    // 버튼 요소 가져오기
+    const btn = document.getElementById('loginBtn');
+    console.log('버튼 요소:', btn);
+    
     // 버튼 클릭 이벤트
-    document.getElementById('loginBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      console.log('버튼 클릭됨!'); // 디버깅용
+    btn.onclick = function() {
+      console.log('버튼 클릭됨!');
       login();
-    });
+    };
     
     // 엔터키로 로그인
-    document.getElementById('nickname').addEventListener('keypress', function(e){
+    document.getElementById('nickname').onkeypress = function(e) {
       if(e.key === 'Enter') {
-        e.preventDefault();
-        console.log('엔터 입력됨!'); // 디버깅용
+        console.log('엔터 입력됨!');
         login();
       }
-    });
+    };
     
-    console.log('login.html 스크립트 로드 완료'); // 디버깅용
+    console.log('이벤트 리스너 등록 완료');
   </script>
 </body>
 </html>
