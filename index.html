@@ -10,12 +10,17 @@
 <header>
   <div class="logo">HYUFLIX</div>
   <nav>
-    <span onclick="render(movies)">홈</span>
+    <span onclick="showHome()">홈</span>
     <span onclick="showMovies()">영화</span>
     <span onclick="showSeries()">시리즈</span>
-    <span>장르</span>
-    <span>마이페이지</span>
+    <span onclick="showFavorites()">찜한콘텐츠</span>
+    <span onclick="location.href='mypage.html'">마이페이지</span>
   </nav>
+  <!-- 검색창 추가 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="영화 검색..." onkeyup="searchMovies()">
+    <span class="search-icon">🔍</span>
+  </div>
 </header>
 
 <section class="hero">
@@ -30,8 +35,11 @@
   <div class="modal-box">
     <img id="detail-img">
     <h2 id="detail-title"></h2>
+    <p id="detail-genre" class="genre-tag"></p>
     <p id="detail-desc"></p>
     <p>⭐ 평점: <span id="detail-rate"></span>/5</p>
+    <!-- 좋아요 버튼 추가 -->
+    <button id="likeBtn" onclick="toggleLike()">❤️ 찜하기</button>
     <button onclick="closeModal()">닫기</button>
   </div>
 </div>
