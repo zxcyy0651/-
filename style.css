@@ -1,10 +1,13 @@
-/* 기본 설정 */
+/* style.css */
+
 body {
   margin: 0;
   background: #000;
   color: white;
   font-family: Arial;
 }
+
+/* 헤더 */
 
 header {
   display: flex;
@@ -28,6 +31,8 @@ nav span {
   cursor: pointer;
 }
 
+/* 히어로 영역 */
+
 .hero {
   height: 400px;
   background: linear-gradient(to right, #0e3b3e, black);
@@ -38,6 +43,8 @@ nav span {
   margin-top: 60px;
 }
 
+/* 그리드 */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -45,7 +52,8 @@ nav span {
   padding: 40px;
 }
 
-/* 카드 기본 스타일 */
+/* 카드 기본 */
+
 .card {
   height: 260px;
   background-size: cover;
@@ -53,8 +61,8 @@ nav span {
   position: relative;
   cursor: pointer;
   transition: transform 0.3s;
-  overflow: hidden;
   border-radius: 12px;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -62,42 +70,40 @@ nav span {
   z-index: 2;
 }
 
-/* hover info */
+/* 카드 위 텍스트 (제목+평점) */
+
 .hover-info {
   position: absolute;
   bottom: 12px;
   left: 12px;
-  background: rgba(0,0,0,0.8);
-  padding: 10px;
-  font-size: 18px;
-  font-weight: bold;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 10px;
+  font-size: 14px;
   opacity: 0;
-  transition: 0.3s;
-  z-index: 3;
-}
-
-/* 영상 프리뷰 */
-.preview-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.25s;
-  z-index: 1;
-}
-
-.card:hover .preview-video {
-  opacity: 1;
+  transition: opacity 0.3s;
+  z-index: 3; /* 영상보다 위에 */
 }
 
 .card:hover .hover-info {
   opacity: 1;
 }
 
+/* 🔥 영상 프리뷰 */
+
+.preview-video {
+  position: absolute;
+  inset: 0;           /* top, right, bottom, left = 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 2;
+}
+
 /* 모달 */
+
 .modal {
   display: none;
   position: fixed;
@@ -105,6 +111,7 @@ nav span {
   background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
+  z-index: 20;
 }
 
 .modal-box {
