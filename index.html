@@ -8,15 +8,21 @@
 <body>
 
 <header>
-  <div class="logo">HYUFLIX</div>
+  <div class="logo" onclick="location.href='index.html'">HYUFLIX</div>
   <nav>
-    <span onclick="showHome()">홈</span>
+    <span onclick="showHome()" style="color:red;">홈</span>
     <span onclick="showMovies()">영화</span>
     <span onclick="showSeries()">시리즈</span>
     <span onclick="showFavorites()">찜한콘텐츠</span>
+    <span onclick="location.href='shop.html'">상점</span>
+    <span onclick="location.href='character.html'">캐릭터</span>
     <span onclick="location.href='mypage.html'">마이페이지</span>
   </nav>
-  <!-- 검색창 추가 -->
+  <div class="user-info">
+    <span id="header-nickname">User</span>
+    <span class="mileage-display">💰 <span id="header-mileage">0</span></span>
+  </div>
+  <!-- 검색창 -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="영화 검색..." onkeyup="searchMovies()">
     <span class="search-icon">🔍</span>
@@ -60,6 +66,7 @@
   </div>
 </div>
 
+<script src="game.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

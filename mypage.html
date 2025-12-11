@@ -2,21 +2,249 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>마이페이지</title>
+  <title>HYUFLIX - My Page</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="page-box">
-    <h2>내 정보</h2>
-    <p>레벨: LV <span id="level">1</span></p>
-    <p>XP: <span id="xp">0</span></p>
-    <p>마일리지: <span id="mileage">0</span></p>
-    <button class="primary-btn" onclick="location.href='character.html'">
-      캐릭터 변경
-    </button>
+<header>
+  <div class="logo" onclick="location.href='index.html'">HYUFLIX</div>
+  <nav>
+    <span onclick="location.href='index.html'">홈</span>
+    <span onclick="location.href='shop.html'">상점</span>
+    <span onclick="location.href='character.html'">캐릭터</span>
+    <span onclick="location.href='mypage.html'" style="color:red;">마이페이지</span>
+  </nav>
+  <div class="user-info">
+    <span id="header-nickname">User</span>
+    <span class="mileage-display">💰 <span id="header-mileage">0</span></span>
   </div>
+</header>
 
-  <script src="app.js"></script>
+<section class="mypage-container">
+  
+  <!-- 프로필 카드 -->
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <div class="avatar-base">🧑</div>
+        <div class="avatar-items" id="profile-equipped"></div>
+      </div>
+      <div class="profile-info">
+        <h2 id="profile-nickname">Nickname</h2>
+        <p class="profile-title" id="profile-title">SF 탐험가</p>
+      </div>
+    </div>
+    
+    <!-- 레벨 & XP -->
+    <div class="level-section">
+      <div class="level-header">
+        <span class="level-badge">LV <span id="user-level">1</span></span>
+        <span class="xp-text"><span id="user-xp">0</span> XP</span>
+      </div>
+      <div class="xp-bar">
+        <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+      </div>
+      <p class="xp-next">다음 레벨까지: <span id="xp-needed">100</span> XP</p>
+    </div>
+    
+    <!-- 마일리지 -->
+    <div class="mileage-section">
+      <h3>💎 보유 마일리지</h3>
+      <p class="mileage-big" id="user-mileage">0</p>
+      <button onclick="location.href='shop.html'" class="shop-link-btn">상점 가기 →</button>
+    </div>
+  </div>
+  
+  <!-- 통계 카드 -->
+  <div class="stats-card">
+    <h3>📊 활동 통계</h3>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon">🎬</div>
+        <div class="stat-info">
+          <p class="stat-value" id="stat-movies">0</p>
+          <p class="stat-label">시청한 영화</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">▶️</div>
+        <div class="stat-info">
+          <p class="stat-value" id="stat-trailers">0</p>
+          <p class="stat-label">본 예고편</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">❤️</div>
+        <div class="stat-info">
+          <p class="stat-value" id="stat-favorites">0</p>
+          <p class="stat-label">찜한 콘텐츠</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🛍️</div>
+        <div class="stat-info">
+          <p class="stat-value" id="stat-items">0</p>
+          <p class="stat-label">보유 아이템</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 일일 미션 -->
+  <div class="missions-card">
+    <h3>🎯 일일 미션</h3>
+    <div class="mission-list" id="mission-list">
+      <!-- 미션들이 렌더링됨 -->
+    </div>
+    <p class="mission-reset">자정에 초기화됩니다</p>
+  </div>
+  
+  <!-- 업적 -->
+  <div class="achievements-card">
+    <h3>🏆 업적</h3>
+    <div class="achievement-list" id="achievement-list">
+      <!-- 업적들이 렌더링됨 -->
+    </div>
+  </div>
+  
+  <!-- 로그아웃 -->
+  <div class="logout-section">
+    <button class="logout-btn" onclick="logout()">로그아웃</button>
+  </div>
+  
+</section>
+
+<script src="game.js"></script>
+<script>
+  checkLogin();
+  updateHeader();
+  
+  function renderMyPage() {
+    const userData = getUserData();
+    
+    // 프로필 정보
+    document.getElementById('profile-nickname').innerText = userData.nickname;
+    document.getElementById('user-level').innerText = userData.level;
+    document.getElementById('user-xp').innerText = userData.xp;
+    document.getElementById('user-mileage').innerText = userData.mileage;
+    
+    // 칭호
+    const titles = {
+      1: 'SF 신입생',
+      2: 'SF 탐험가',
+      3: 'SF 마스터',
+      4: 'SF 전문가',
+      5: 'SF 레전드',
+      6: 'SF 신'
+    };
+    document.getElementById('profile-title').innerText = titles[userData.level] || 'SF 팬';
+    
+    // XP 바
+    const nextLevelXP = [100, 300, 600, 1000, 1500, 2000][userData.level - 1] || 2000;
+    const prevLevelXP = [0, 100, 300, 600, 1000, 1500][userData.level - 1] || 0;
+    const currentLevelXP = userData.xp - prevLevelXP;
+    const neededXP = nextLevelXP - prevLevelXP;
+    const percentage = (currentLevelXP / neededXP) * 100;
+    
+    document.getElementById('xp-fill').style.width = percentage + '%';
+    document.getElementById('xp-needed').innerText = nextLevelXP - userData.xp;
+    
+    // 장착 아이템
+    const equippedDiv = document.getElementById('profile-equipped');
+    equippedDiv.innerHTML = '';
+    userData.equipped.forEach(item => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'avatar-item';
+      itemDiv.innerHTML = item.icon;
+      equippedDiv.appendChild(itemDiv);
+    });
+    
+    // 통계
+    document.getElementById('stat-movies').innerText = userData.stats.moviesWatched;
+    document.getElementById('stat-trailers').innerText = userData.stats.trailersWatched;
+    document.getElementById('stat-favorites').innerText = userData.stats.favoriteCount;
+    document.getElementById('stat-items').innerText = userData.inventory.length;
+    
+    // 일일 미션
+    renderMissions(userData.dailyMissions);
+    
+    // 업적
+    renderAchievements(userData.achievements);
+  }
+  
+  function renderMissions(missions) {
+    const list = document.getElementById('mission-list');
+    list.innerHTML = '';
+    
+    const missionData = [
+      { key: 'watchMovies', icon: '🎬', name: '영화 시청하기' },
+      { key: 'watchTrailers', icon: '▶️', name: '예고편 보기' },
+      { key: 'addFavorites', icon: '❤️', name: '영화 찜하기' }
+    ];
+    
+    missionData.forEach(m => {
+      const mission = missions[m.key];
+      const progress = Math.min(mission.current, mission.target);
+      const percentage = (progress / mission.target) * 100;
+      
+      const div = document.createElement('div');
+      div.className = 'mission-item' + (mission.completed ? ' completed' : '');
+      div.innerHTML = `
+        <div class="mission-icon">${m.icon}</div>
+        <div class="mission-content">
+          <p class="mission-name">${m.name} ${mission.completed ? '✅' : ''}</p>
+          <div class="mission-progress">
+            <div class="mission-bar">
+              <div class="mission-fill" style="width: ${percentage}%"></div>
+            </div>
+            <span class="mission-count">${progress}/${mission.target}</span>
+          </div>
+          <p class="mission-reward">보상: +${mission.reward} 💎</p>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+  
+  function renderAchievements(achievements) {
+    const list = document.getElementById('achievement-list');
+    
+    const allAchievements = [
+      { id: 'first_movie', name: '첫 영화 시청', desc: '첫 번째 영화 감상', reward: 50 },
+      { id: 'ten_favorites', name: '영화 수집가', desc: '영화 10개 찜하기', reward: 100 },
+      { id: 'level_3', name: '레벨 3 달성', desc: 'LV3에 도달', reward: 150 },
+      { id: 'level_5', name: '레벨 5 달성', desc: 'LV5에 도달', reward: 300 },
+      { id: 'big_spender', name: '소비왕', desc: '상점에서 5개 구매', reward: 200 }
+    ];
+    
+    list.innerHTML = '';
+    
+    allAchievements.forEach(ach => {
+      const unlocked = achievements.includes(ach.id);
+      
+      const div = document.createElement('div');
+      div.className = 'achievement-item' + (unlocked ? ' unlocked' : '');
+      div.innerHTML = `
+        <div class="achievement-icon">${unlocked ? '🏆' : '🔒'}</div>
+        <div class="achievement-info">
+          <p class="achievement-name">${ach.name}</p>
+          <p class="achievement-desc">${ach.desc}</p>
+          <p class="achievement-reward">+${ach.reward} 💎</p>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+  
+  function logout() {
+    if(confirm('정말 로그아웃 하시겠습니까?')) {
+      window.location.href = 'login.html';
+    }
+  }
+  
+  renderMyPage();
+</script>
+
 </body>
 </html>

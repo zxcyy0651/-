@@ -1,3 +1,7 @@
+// 로그인 체크
+checkLogin();
+updateHeader();
+
 const movies = [
   {title:"인터스텔라", rate:4.9, desc:"우주 생존을 건 인류의 마지막 미션", img:"images/m1.jpg", type:"movie", genre:"SF", trailer:"d2VN6NNa9BE"},
   {title:"인셉션", rate:4.8, desc:"꿈 속 작전", img:"images/m2.jpg", type:"movie", genre:"SF", trailer:"EiFcZjhmFDA"},
@@ -84,6 +88,10 @@ function openDetail(m){
     likeBtn.innerText = "❤️ 찜하기";
     likeBtn.classList.remove("liked");
   }
+  
+  // 마일리지 추가 (영화 클릭)
+  addMileage(10, '영화 탐색');
+  updateStats('movie');
 }
 
 // 예고편 재생
@@ -95,6 +103,10 @@ function playTrailer(){
   
   // 예고편 위치로 스크롤
   trailerContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  
+  // 마일리지 추가 (예고편 시청)
+  addMileage(15, '예고편 시청');
+  updateStats('trailer');
 }
 
 function closeModal(){
@@ -112,22 +124,19 @@ function toggleLike(){
   if(index === -1) {
     // 추가
     favorites.push(currentMovie);
-    alert(`${currentMovie.title}를 찜 목록에 추가했습니다! ❤️`);
+    addMileage(5, '찜하기');
+    updateStats('favorite');
+    showNotification(`${currentMovie.title}를 찜 목록에 추가! +5💎`);
   } else {
     // 제거
     favorites.splice(index, 1);
-    alert(`${currentMovie.title}를 찜 목록에서 제거했습니다.`);
+    showNotification(`${currentMovie.title}를 찜 목록에서 제거`);
   }
   
   localStorage.setItem("favorites", JSON.stringify(favorites));
   
   // 현재 보고 있는 목록 다시 렌더링
-  const currentView = document.querySelector('nav span[style*="color: red"]');
-  if(currentView && currentView.innerText === "찜한콘텐츠") {
-    showFavorites();
-  } else {
-    render(movies);
-  }
+  render(movies);
   
   closeModal();
 }
