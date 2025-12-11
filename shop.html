@@ -1,1 +1,138 @@
-1
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>HYUFLIX - Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="location.href='index.html'">HYUFLIX</div>
+  <nav>
+    <span onclick="location.href='index.html'">홈</span>
+    <span onclick="location.href='shop.html'" style="color:red;">상점</span>
+    <span onclick="location.href='character.html'">캐릭터</span>
+    <span onclick="location.href='mypage.html'">마이페이지</span>
+  </nav>
+  <div class="user-info">
+    <span id="header-nickname">User</span>
+    <span class="mileage-display">💰 <span id="header-mileage">0</span></span>
+  </div>
+</header>
+
+<section class="shop-hero">
+  <h1>🛸 SF ITEM SHOP</h1>
+  <p>마일리지로 미래형 아이템을 구매하세요</p>
+  <div class="mileage-big">
+    보유 마일리지: <span id="current-mileage">0</span> 💎
+  </div>
+</section>
+
+<section class="shop-grid" id="shop-grid">
+  <!-- 아이템들이 여기 렌더링됨 -->
+</section>
+
+<script src="game.js"></script>
+<script>
+  // 페이지 로드 시 체크
+  checkLogin();
+  updateHeader();
+  
+  // 상점 아이템 목록
+  const shopItems = [
+    {id: 1, name: "사이버 선글라스", price: 10, icon: "🕶️", type: "head"},
+    {id: 2, name: "네온 재킷", price: 20, icon: "🧥", type: "body"},
+    {id: 3, name: "홀로그램 시계", price: 15, icon: "⌚", type: "hand"},
+    {id: 4, name: "양자 헤드셋", price: 30, icon: "🎧", type: "head"},
+    {id: 5, name: "레이저 건", price: 25, icon: "🔫", type: "hand"},
+    {id: 6, name: "우주복", price: 50, icon: "👨‍🚀", type: "body"},
+    {id: 7, name: "로봇 팔", price: 35, icon: "🦾", type: "hand"},
+    {id: 8, name: "광선검", price: 40, icon: "⚔️", type: "hand"},
+    {id: 9, name: "제트팩", price: 45, icon: "🎒", type: "back"},
+    {id: 10, name: "AI 드론", price: 30, icon: "🤖", type: "pet"}
+  ];
+  
+  // 상점 렌더링
+  function renderShop() {
+    const userData = getUserData();
+    const grid = document.getElementById('shop-grid');
+    grid.innerHTML = '';
+    
+    document.getElementById('current-mileage').innerText = userData.mileage;
+    
+    shopItems.forEach(item => {
+      const owned = userData.inventory.some(i => i.id === item.id);
+      
+      const card = document.createElement('div');
+      card.className = 'shop-card';
+      if(owned) card.classList.add('owned');
+      
+      card.innerHTML = `
+        <div class="item-icon">${item.icon}</div>
+        <h3>${item.name}</h3>
+        <p class="item-type">${getTypeKorean(item.type)}</p>
+        <p class="item-price">💎 ${item.price}</p>
+        ${owned ? 
+          '<button class="owned-btn" disabled>보유중</button>' :
+          `<button class="buy-btn" onclick="buyItem(${item.id})">구매하기</button>`
+        }
+      `;
+      
+      grid.appendChild(card);
+    });
+  }
+  
+  // 아이템 구매
+  function buyItem(itemId) {
+    const userData = getUserData();
+    const item = shopItems.find(i => i.id === itemId);
+    
+    if(!item) return;
+    
+    // 이미 보유중
+    if(userData.inventory.some(i => i.id === itemId)) {
+      alert('이미 보유한 아이템입니다!');
+      return;
+    }
+    
+    // 마일리지 부족
+    if(userData.mileage < item.price) {
+      alert(`마일리지가 부족합니다! (필요: ${item.price}, 보유: ${userData.mileage})`);
+      return;
+    }
+    
+    // 구매 확인
+    if(!confirm(`${item.name}을(를) ${item.price} 마일리지에 구매하시겠습니까?`)) {
+      return;
+    }
+    
+    // 구매 처리
+    userData.mileage -= item.price;
+    userData.inventory.push(item);
+    
+    saveUserData(userData);
+    
+    alert(`🎉 ${item.name}을(를) 구매했습니다!`);
+    
+    renderShop();
+    updateHeader();
+  }
+  
+  function getTypeKorean(type) {
+    const types = {
+      head: '머리',
+      body: '상의',
+      hand: '손',
+      back: '등',
+      pet: '펫'
+    };
+    return types[type] || type;
+  }
+  
+  // 초기 렌더링
+  renderShop();
+</script>
+
+</body>
+</html>
