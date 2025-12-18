@@ -4,7 +4,7 @@
 
 넷플릭스 스타일의 영화 추천 웹사이트 + 게임 시스템
 
-[🔗 Live Demo](https://zxcyy0651.github.io/-/)
+[🔗 Live 완성본](https://zxcyy0651.github.io/-/)
 
 ---
 
